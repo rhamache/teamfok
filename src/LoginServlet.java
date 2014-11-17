@@ -8,9 +8,9 @@ public class LoginServlet extends HttpServlet
 	  public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
       {
+		  // Display the login page
 		  RequestDispatcher view = request.getRequestDispatcher("/html/login.html");
 		  view.forward(request, response);
-		  
       }
 	  
 	  public void doPost(HttpServletRequest request, HttpServletResponse response)
