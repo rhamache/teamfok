@@ -18,12 +18,18 @@ public class LoginServlet extends HttpServlet
 	  {
 		  String username = request.getParameter("USERID");
 		  String password = request.getParameter("PASSWD");
+		  PrintWriter out = response.getWriter();
 		  
 	      // Set response content type
 	      response.setContentType("text/html");
-
-	      // Actual logic goes here.
-	      PrintWriter out = response.getWriter();
+	      
+	      try {
+	    	  LoginController dbc = new LoginController();
+	      } catch (Exception e) {
+	    	  out.println(e.getMessage());
+	    	  return;
+	      }
+	      
 	      out.println("<h2>Username:"+username+"</h2>");
 	      out.println("<h2>Password:"+password+"</h2>");
 	  }
