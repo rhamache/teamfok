@@ -6,7 +6,7 @@ import java.util.*;
 public class DatabaseController{
 	/* Oracle credentials */
 	private final String Orc_Driver = "oracle.jdbc.driver.OracleDriver";
-    private final String Orc_URL = "jdbc:oracle:thin:@host:1521:database";
+    private final String Orc_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
     private final String Orc_Username = "hfok";
     private final String Orc_Passwd = "43KBSQL5";
     

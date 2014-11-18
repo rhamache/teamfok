@@ -4,11 +4,13 @@ public class TestCases {
 
 	public static void main(String[] args) {
 		
-		TestCases.TestDBC();
+		int total_tests = 0, tests_passed = 0;
+		
+		tests_passed += TestCases.TestDBC();
 
 	}
 	
-	public static void TestDBC() {
+	public static int TestDBC() {
 		try {
 			DatabaseController dbc = new DatabaseController();
 		}
@@ -18,9 +20,12 @@ public class TestCases {
 			e.printStackTrace();
 			System.out.println("Exception: " + e.getMessage());
 			System.out.println("testDBC(): test failed.");
-			return;
+			return 0;
 		}
 		
+		
+		System.out.println("testDBC(): test passed!");
+		return 1;
 		
 	}
 
