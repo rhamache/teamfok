@@ -324,7 +324,7 @@ public class TestHttpServletRequest implements HttpServletRequest {
 	@Override
 	public HttpSession getSession() {
 		// TODO Auto-generated method stub
-		return null;
+		return new TestHttpSession();
 	}
 
 	@Override

@@ -5,6 +5,7 @@
 <p>
 <ul>
         <li><a href = "login.html">Login Page</a></p></li>
+        <li><a href = "sql_input.html">Execute SQL statements (admin only)</a></li>
 </ul>
 </p>
 </body>
