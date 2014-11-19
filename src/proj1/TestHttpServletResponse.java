@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class TestHttpServletResponse implements HttpServletResponse {
 
-	public String response_text = "";
+	public StringWriter sw;
 	
 	@Override
 	public void flushBuffer() throws IOException {
@@ -53,7 +53,9 @@ public class TestHttpServletResponse implements HttpServletResponse {
 	@Override
 	public PrintWriter getWriter() throws IOException {
 		// TODO Auto-generated method stub
-		return new PrintWriter(new StringWriter());
+		if (sw == null)
+			sw = new StringWriter();
+		return new PrintWriter(sw);
 	}
 
 	@Override
@@ -158,29 +160,7 @@ public class TestHttpServletResponse implements HttpServletResponse {
 		return null;
 	}
 
-	@Override
-	public String getHeader(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Collection<String> getHeaderNames() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<String> getHeaders(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getStatus() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public void sendError(int arg0) throws IOException {

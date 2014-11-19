@@ -12,7 +12,6 @@ public class DatabaseController{
     
     Connection conn;
     
-    
     public DatabaseController() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
     	this.conn = null;
     	Class drvClass = Class.forName(Orc_Driver); 

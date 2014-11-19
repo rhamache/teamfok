@@ -12,7 +12,7 @@ public class TestCases {
 		
 		int total_tests = 2, tests_passed = 0;
 		
-		//tests_passed += TestCases.TestDBC();
+		tests_passed += TestCases.TestDBC();
 		
 		tests_passed += TestCases.TestLoginPost();
 
@@ -57,7 +57,7 @@ public class TestCases {
 			e.printStackTrace();
 		}
 		
-		System.out.println(res.response_text);
+		System.out.println(res.sw.getBuffer());
 		
 		
 		return 1;

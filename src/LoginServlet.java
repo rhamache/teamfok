@@ -1,4 +1,5 @@
 import java.io.*;
+import java.sql.SQLException;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -9,8 +10,15 @@ public class LoginServlet extends HttpServlet
       throws ServletException, IOException
       {
 		  // Display the login page
-		  RequestDispatcher view = request.getRequestDispatcher("/html/login.html");
-		  view.forward(request, response);
+		  HttpSession session = request.getSession();
+		  
+		  if (session.getAttribute("username") == null) {
+			  RequestDispatcher view = request.getRequestDispatcher("/html/login.html");
+			  view.forward(request, response);
+		  } else {
+			  PrintWriter out = response.getWriter();
+			  out.println("<h2>You are already logged in</h2>");
+		  }
       }
 	  
 	  public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -24,14 +32,42 @@ public class LoginServlet extends HttpServlet
 	      // Set response content type
 	      response.setContentType("text/html");
 	      
-	     /* try {
-	    	  LoginController dbc = new LoginController();
+	      LoginController ldbc = null;
+	      try {
+	    	  ldbc = new LoginController();
 	      } catch (Exception e) {
 	    	  out.println(e.getMessage());
 	    	  return;
-	      }*/
+	      }
 	      
-	      out.println("<h2>Username:"+username+"</h2>");
-	      out.println("<h2>Password:"+password+"</h2>");
+	      HttpSession session = request.getSession(true);
+
+	      boolean good_credentials = false;
+	      try
+	      {
+	    	  good_credentials = ldbc.checkCredentials(username, password);
+	      } catch (SQLException e)
+	      {
+			out.println("Exception: "+e.getMessage());
+			return;
+	      }
+	      
+	      if (good_credentials)
+	      {
+	    	  if (session == null) { System.out.println("null"); }
+		      session.setAttribute("username", username);
+		      response.sendRedirect("index.html");
+	      } else {
+		      out.println("<h2>Incorrect login information. <a href = \"login.html\">Try Again.</a></h2>");
+	      }
+	      
+	      try
+	      {
+	    	  ldbc.close();
+	      } catch (SQLException e)
+	      {
+	    	  // TODO Auto-generated catch block
+	    	  out.println("Exception: "+e.getMessage());
+	      }
 	  }
 }
