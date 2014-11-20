@@ -11,6 +11,7 @@ import proj1.DatabaseController;
 import proj1.HTMLBuilder;
 import proj1.HomePageServlet;
 
+import security.SecurityController;
 import usermanagement.LoginServlet;
 import usermanagement.RegistrationController;
 
@@ -18,7 +19,7 @@ public class TestCases {
 
 	public static void main(String[] args) {
 		
-		int total_tests = 4, tests_passed = 0;
+		int total_tests = 5, tests_passed = 0;
 		
 		tests_passed += TestCases.TestDBC();
 		
@@ -29,14 +30,17 @@ public class TestCases {
 		tests_passed += TestCases.TestHTMLFromFile();
 		
 		tests_passed += TestCases.TestRegistrationNewUser();
+		
+		tests_passed += TestCases.TestIsMemberOf();
 
 		
 		System.out.println("Tests passed: "+tests_passed+"/"+total_tests);
 	}
 	
 	public static int TestDBC() {
+		DatabaseController dbc = null;
 		try {
-			DatabaseController dbc = new DatabaseController();
+			dbc = new DatabaseController();
 		}
 		catch (Exception e)
 		{
@@ -45,6 +49,15 @@ public class TestCases {
 			System.out.println("Exception: " + e.getMessage());
 			System.out.println("testDBC(): test failed.");
 			return 0;
+		}
+		
+		try
+		{
+			dbc.close();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		
@@ -95,6 +108,7 @@ public class TestCases {
 			return 0;
 		}
 		
+		
 		return 1;
 	}
 	
@@ -144,6 +158,7 @@ public class TestCases {
 			e.printStackTrace();
 		}
 		
+		
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add("ryham");
 		fields.add("password");
@@ -164,8 +179,83 @@ public class TestCases {
 			e.printStackTrace();
 		}
 		
+		// now delete
+		try
+		{
+			rc.deleteUser("ryham");
+		} catch (SQLException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try
+		{
+			rc.close();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		return 1;
+	}
+	
+	public static int TestIsMemberOf()
+	{
+		String username = "j.bieber"; int id = 11;
+		
+		SecurityController sc = null;
+		try
+		{
+			sc = new SecurityController();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		HttpSession sesh = new TestHttpSession();
+		sesh.setAttribute("username", username);
+		
+		boolean rval = false;
+		try
+		{
+			rval = sc.isMemberOf(sesh, id);
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try
+		{
+			sc.close();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (rval){
+			return 1;
+		} else {
+			System.out.println("TestMemberOf Failed.");
+			return 0;
+		}
 	}
 
 }

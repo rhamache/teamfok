@@ -14,29 +14,52 @@ import javax.servlet.http.HttpSession;
 
 import proj1.HTMLBuilder;
 
-import security.SecurityModule;
+import security.SecurityController;
 
 
 
 public class RegistrationServlet extends HttpServlet
 {
-	  public void doGet(HttpServletRequest request, HttpServletResponse response)
+	private static final long serialVersionUID = -8917381672795327238L;
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	  throws ServletException, IOException
 	  {
-		  // Display the login page
-		  if (!SecurityModule.isLoggedIn(request.getSession())) {
-			  RequestDispatcher view = request.getRequestDispatcher("/html/registration.html");
-			  view.forward(request, response);
+			HTMLBuilder html = new HTMLBuilder();
+			html.makeHeader();
+		
+		  // Display the req page
+		  if (!SecurityController.isLoggedIn(request.getSession())) {
+			  ServletContext context = getServletContext();
+			  String path = context.getRealPath("/html/registration.html");
+			  
+			  html.makeMenu(false);
+			  html.buildFromFile(path);
 		  } else {
-			  PrintWriter out = response.getWriter();
-			  out.println("<h2>You are already logged in, "+request.getSession().getAttribute("username")+"</h2>");
-			  out.println("<p><a href = \"/html/logout.html\">Logout</a> before creating a new account.</p>");
+			  html.appendHTML("<h2>You are already logged in, "+request.getSession().getAttribute("username")+"</h2>");
+			  html.appendHTML("<p><a href = \"logout.html\">Logout</a> before creating a new account.</p>");
 		  }
+		  
+		  html.makeFooter();
+		  html.putInResponse(response);
 	  }
 	  
 	  public void doPost(HttpServletRequest request, HttpServletResponse response)
 	  throws IOException 
 	  {
+		  HTMLBuilder html = new HTMLBuilder();
+		  boolean loggedIn = false;
+		  
+		  if (SecurityController.isLoggedIn(request.getSession()))
+		  {
+			  html.makeHeader();
+			  html.makeMenu(true);
+			  html.appendHTML("You can't register a new account while logged in. Logout first.");
+			  html.makeFooter();
+			  html.putInResponse(response);
+			  return;
+		  }
+		  
 		  ArrayList<String> fields = new ArrayList<String>(8);
 		  
 		  // grab all fields
@@ -87,10 +110,19 @@ public class RegistrationServlet extends HttpServlet
 		  } else {
 			  ServletContext context = getServletContext();
 			  String path = context.getRealPath("/html/registration.html");
-			  HTMLBuilder html = new HTMLBuilder();
-			  html.makeHeader(rc.getFieldError());
+			  html.makeHeader();
+			  html.makeMenu(false);
+			  html.appendHTML(rc.getFieldError());
 			  html.buildFromFile(path);
 			  html.putInResponse(response);
+		  }
+		  
+		  try
+		  {
+			  rc.close();
+		  } catch (SQLException e)
+		  {
+			  out.println(e.getMessage());
 		  }
 
 

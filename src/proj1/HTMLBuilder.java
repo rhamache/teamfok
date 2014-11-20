@@ -1,20 +1,18 @@
 package proj1;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
 public class HTMLBuilder
 {
 	private StringWriter bundle;
 	private PrintWriter pw;
+	
 	
 	
 	
@@ -28,10 +26,38 @@ public class HTMLBuilder
 		pw.println("<!DOCTYPE html>" + "<html>");
 	}
 	
+	public void appendHTML(String text)
+	{
+		pw.println("<p>"+text+"</p>");
+	}
+	
 	public void makeHeader(String text){
 		pw.println("<!DOCTYPE html>" + "<html><p>"+text+"</p>");
 	}
 	
+	public void makeMenu(boolean loggedIn) {
+		pw.println("<style>");
+		pw.println("ul {");
+		pw.println("list-style-type: none;");
+		pw.println("margin: 0;");
+		pw.println("padding: 0;");
+		pw.println("}");
+		pw.println("</style>");
+		pw.println("</head>");
+		pw.println("<ul>");
+		pw.println("<li><a href=\"/proj1\">Home</a></li>");
+		if (loggedIn)
+		{
+			pw.println("<li><a href=\"logout.html\">Logout</a></li>");
+			pw.println("<li><a href=\"search.html\">Search</a></li>");
+		} else {
+			pw.println("<li><a href=\"login.html\">Login</a></li>");
+		}
+		pw.println("</ul>");
+		pw.println("<hr>");
+	}
+		
+		
 	public void makeBody(String bodyText){
 				this.makeHeader();
                 pw.println("<body>" + bodyText + "</body>");
@@ -65,6 +91,19 @@ public class HTMLBuilder
 		String str = fileData.toString();
 		pw.print(str);
 		
+	}
+	
+	public void buildCompleteFromFile(String path, boolean loggedIn) {
+		this.makeHeader();
+		this.makeMenu(loggedIn);
+		try
+		{
+			this.buildFromFile(path);
+		} catch (IOException e)
+		{
+			pw.println(e.getMessage());
+		}
+		this.makeFooter();
 	}
 	
 	public void putInResponse(HttpServletResponse res) throws IOException

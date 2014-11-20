@@ -9,13 +9,12 @@ import javax.servlet.http.HttpSessionContext;
 
 public class TestHttpSession implements HttpSession
 {
+	private String username;
 
 	@Override
 	public Object getAttribute(String arg0)
 	{
-
-		// TODO Auto-generated method stub
-		return null;
+		return username;
 	}
 
 	@Override
@@ -134,7 +133,7 @@ public class TestHttpSession implements HttpSession
 	public void setAttribute(String arg0, Object arg1)
 	{
 
-		// TODO Auto-generated method stub
+		username = (String) arg1;
 		
 	}
 

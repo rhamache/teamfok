@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class RawSQLServlet extends HttpServlet
 {
-	  public void doGet(HttpServletRequest request, HttpServletResponse response)
+	private static final long serialVersionUID = -7189552794396164530L;
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	  throws ServletException, IOException
 	  {
 		  response.setContentType("text/html");

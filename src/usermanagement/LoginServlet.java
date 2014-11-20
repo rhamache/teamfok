@@ -6,23 +6,35 @@ import java.sql.SQLException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import security.SecurityModule;
+import proj1.HTMLBuilder;
+
+import security.SecurityController;
 
 
 public class LoginServlet extends HttpServlet
 {
-	  public void doGet(HttpServletRequest request, HttpServletResponse response)
+	private static final long serialVersionUID = -6793869407295943400L;
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
       {
+		  HTMLBuilder html = new HTMLBuilder();
+		  
 		  // Display the login page
-		  if (!SecurityModule.isLoggedIn(request.getSession())) {
-			  RequestDispatcher view = request.getRequestDispatcher("/html/login.html");
-			  view.forward(request, response);
+		  if (!SecurityController.isLoggedIn(request.getSession())) {
+			  ServletContext context = getServletContext();
+			  String path = context.getRealPath("/html/login.html");
+			  
+			  html.buildCompleteFromFile(path, false);
 		  } else {
-			  PrintWriter out = response.getWriter();
-			  out.println("<h2>You are already logged in, "+request.getSession().getAttribute("username")+"</h2>");
-			  out.println("<p>Want to logout? Click <a href = \"/html/logout.html\">here.</a></p>");
+			  html.makeHeader();
+			  html.makeMenu(true);
+			  html.appendHTML("<h2>You are already logged in, "+request.getSession().getAttribute("username")+"</h2>");
+			  html.appendHTML("<p>Want to logout? Click <a href = \"/html/logout.html\">here.</a></p>");
+			  html.makeFooter();
 		  }
+		  
+		  html.putInResponse(response);
       }
 	  
 	  public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -70,7 +82,6 @@ public class LoginServlet extends HttpServlet
 	    	  ldbc.close();
 	      } catch (SQLException e)
 	      {
-	    	  // TODO Auto-generated catch block
 	    	  out.println("Exception: "+e.getMessage());
 	      }
 	  }

@@ -62,7 +62,7 @@ public class RegistrationController extends DatabaseController
 			count = rset.getInt(1);
 		}
 		
-		if (count > 0) { CurrentError = "Username too long."; return false; }
+		if (count > 0) { CurrentError = "Username already exists."; return false; }
 		if (fields.get(0).length() > 24) { CurrentError = "Username not unique."; return false; } 
 		
 		// ensure passwords match and less than 24 characters
@@ -97,6 +97,20 @@ public class RegistrationController extends DatabaseController
 		
 		stmt.executeUpdate(sql1);
 		stmt.executeUpdate(sql2);
+		stmt.executeUpdate("COMMIT");
+	}
+	
+	public void deleteUser(String name) throws SQLException
+	{
+		Statement stmt = null;
+		stmt = conn.createStatement();
+		
+		
+		String sql = "DELETE FROM users WHERE user_name = '"+name+"'";
+		String sql2 = "DELETE FROM persons WHERE user_name = '"+name+"'";
+		
+		stmt.executeUpdate(sql2);
+		stmt.executeUpdate(sql);
 		stmt.executeUpdate("COMMIT");
 	}
 

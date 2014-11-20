@@ -9,22 +9,29 @@ import javax.servlet.http.HttpServletResponse;
 
 import proj1.HTMLBuilder;
 
-import security.SecurityModule;
+import security.SecurityController;
 
 
 public class LogoutServlet extends HttpServlet
 {
-	  public void doGet(HttpServletRequest request, HttpServletResponse response)
+	private static final long serialVersionUID = -4389352604727557429L;
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 		      throws ServletException, IOException
 		      {
 		  			HTMLBuilder html = new HTMLBuilder();
-		  			if(SecurityModule.isLoggedIn(request.getSession()))
+	  				html.makeHeader();
+	  				html.makeMenu(false);
+		  			
+		  			if(SecurityController.isLoggedIn(request.getSession()))
 		  			{
 		  				request.getSession().removeAttribute("username");
 		  				html.makeBody("You have successfully logged out.");
 		  			} else {
 		  				html.makeBody("Error: you are not logged in!");
 		  			}
+		  			
+		  			html.makeFooter();
 		  			
 		  			html.putInResponse(response);
 		      }
