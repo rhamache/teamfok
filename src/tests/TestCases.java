@@ -71,8 +71,6 @@ public class TestCases {
 			e.printStackTrace();
 		}
 		
-		System.out.println(res.sw.getBuffer());
-		
 		
 		return 1;
 	}
