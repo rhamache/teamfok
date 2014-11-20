@@ -1,23 +1,23 @@
 <html>
 <head>
-<title> SQL input </title>
+<title> Search </title>
 </head>
 <body>
 <center>
-<h3>Enter any SQL statement to execute </h3>
+<h1><b>Search Page</b></h1>
 <form action="sql_input.html" method=POST>
-<textarea rows = 5 cols = 40 name=query>
-
-
-
-
-
-
+<h4>Keywords</h4>
+<textarea rows = 5 cols = 40 name=query style="width: 300px; height: 200px; resize: none;" >
 </textarea>
 <table>
-<tr><td><input type = submit value = "execute">
-<td><table border = 1><tr><td>
+<tr><td><input type = submit value = "execute"></td>
+<td><table border = 1></tr></td>
 </table>
+<input type="radio" name="TBR" value="Most-Recent" > Most-Recent
+<br>
+<input type="radio" name="TBR" value="Least-Recent"> Least-Recent
+<br>
+<input type="radio" name="TBR" value="Neither" checked > Neither
 </form>
 </body>
 </html>

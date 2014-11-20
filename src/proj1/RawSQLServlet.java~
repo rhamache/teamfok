@@ -1,19 +1,11 @@
 package proj1;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Blob;
+import java.io.*;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Types;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 public class RawSQLServlet extends HttpServlet
 {
@@ -25,19 +17,32 @@ public class RawSQLServlet extends HttpServlet
 		  RequestDispatcher view = request.getRequestDispatcher("/html/sql_input.html");
 		  view.forward(request, response);
 	  }
+	  public class SearchController extends DatabaseController {
+		SearchController sbc = null; 
+		try {
+			 sbc = new DatabaseController();
+		  } 	catch (Exception e){
+			  out.println(e.getMessage());
+			  return;
+		  } 
+
+		}
 
 	  public void doPost(HttpServletRequest request, HttpServletResponse response)
 	  throws ServletException, IOException
-	  {	
+	  {
 		  PrintWriter out = response.getWriter();
+	
 		  ResultSet rset = null;
+		  
+		
 		  String search = request.getParameter("search");
-		  /*
+
 		 try {
-			 //rset = sbc.executeSQLTextStatement(search);
+			  rset = sbc.executeSQLTextStatement(search);
 		 } catch (SQLException e) {
 			  out.println(e.getMessage());
-		}*/
+		}
 		
 		  displayResultSet(out, rset);
 	  }
