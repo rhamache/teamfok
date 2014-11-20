@@ -23,7 +23,7 @@ public class HomePageServlet extends HttpServlet
 		  			  out.print("<html><body><h1>391 Photoshare Project</h1><h3>Welcome, "+request.getSession().getAttribute("username")+
 						    "!</h3><p><ul><li><a href = \"logout.html\">Logout</a></p></li></ul></p></body></html>");
 		  			} else {
-		  				out.print("<html><body><h1>391 Photoshare Project</h1><h3>Please Login to Access Site Functionality<p><ul><li><a href = ");
+		  				out.print("<html><body><h1>391 Photoshare Project</h1><h3>Please <a href = \"login.html\">Login</a> to Access Site Functionality<p><ul><li>");
 		  			}
 		      }
 }
