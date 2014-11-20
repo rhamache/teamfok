@@ -30,6 +30,7 @@ public class LoginServlet extends HttpServlet
 	  {
 		  String username = request.getParameter("USERID");
 		  String password = request.getParameter("PASSWD");
+		  String passhash = "" + password.hashCode();
 		  PrintWriter out = response.getWriter();
 		  
 		  
@@ -49,7 +50,7 @@ public class LoginServlet extends HttpServlet
 	      boolean good_credentials = false;
 	      try
 	      {
-	    	  good_credentials = ldbc.checkCredentials(username, password);
+	    	  good_credentials = ldbc.checkCredentials(username, passhash);
 	      } catch (SQLException e)
 	      {
 			out.println("Exception: "+e.getMessage());
@@ -58,7 +59,6 @@ public class LoginServlet extends HttpServlet
 	      
 	      if (good_credentials)
 	      {
-	    	  if (session == null) { System.out.println("null"); }
 		      session.setAttribute("username", username);
 		      response.sendRedirect("home");
 	      } else {

@@ -17,7 +17,7 @@ public class LoginController extends DatabaseController
 		super();
 	}
 	
-	public boolean checkCredentials(String username, String password) throws SQLException {
+	public boolean checkCredentials(String username, String passhash) throws SQLException {
 		String query = "select PASSWORD from USERS where USER_NAME = '"+username+"'";
 		Statement stmt = null; ResultSet rset = null;
 		
@@ -30,7 +30,7 @@ public class LoginController extends DatabaseController
         	truepwd = (rset.getString(1)).trim();
     	}
 
-        if(password.equals(truepwd))
+        if(passhash.equals(truepwd))
 	        return true;
     	else
         	return false;

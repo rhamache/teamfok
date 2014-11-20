@@ -17,13 +17,15 @@ public class LogoutServlet extends HttpServlet
 	  public void doGet(HttpServletRequest request, HttpServletResponse response)
 		      throws ServletException, IOException
 		      {
-		  			HTMLBuilder out = new HTMLBuilder();
+		  			HTMLBuilder html = new HTMLBuilder();
 		  			if(SecurityModule.isLoggedIn(request.getSession()))
 		  			{
 		  				request.getSession().removeAttribute("username");
-		  				out.makeBody("You have successfully logged out.");
+		  				html.makeBody("You have successfully logged out.");
 		  			} else {
-		  				out.makeBody("Error: you are not logged in!");
+		  				html.makeBody("Error: you are not logged in!");
 		  			}
+		  			
+		  			html.putInResponse(response);
 		      }
 }
