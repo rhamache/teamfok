@@ -19,6 +19,7 @@ public class DatabaseController{
     	DriverManager.registerDriver((Driver) drvClass.newInstance());
     	conn = DriverManager.getConnection(Orc_URL, Orc_Username,Orc_Passwd);
     	conn.setAutoCommit(false);
+
     }
 
     
