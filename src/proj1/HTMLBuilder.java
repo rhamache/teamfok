@@ -50,6 +50,7 @@ public class HTMLBuilder
 		{
 			pw.println("<li><a href=\"logout.html\">Logout</a></li>");
 			pw.println("<li><a href=\"search.html\">Search</a></li>");
+			pw.println("<li><a href=\"groups.html\">Groups</a></li>");
 		} else {
 			pw.println("<li><a href=\"login.html\">Login</a></li>");
 		}
