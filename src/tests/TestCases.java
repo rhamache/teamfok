@@ -3,6 +3,8 @@ package tests;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -11,6 +13,7 @@ import proj1.DatabaseController;
 import proj1.HTMLBuilder;
 import proj1.HomePageServlet;
 
+import search.SearchController;
 import security.SecurityController;
 import usermanagement.LoginServlet;
 import usermanagement.RegistrationController;
@@ -19,7 +22,7 @@ public class TestCases {
 
 	public static void main(String[] args) {
 		
-		int total_tests = 5, tests_passed = 0;
+		int total_tests = 6, tests_passed = 0;
 		
 		tests_passed += TestCases.TestDBC();
 		
@@ -32,6 +35,8 @@ public class TestCases {
 		tests_passed += TestCases.TestRegistrationNewUser();
 		
 		tests_passed += TestCases.TestIsMemberOf();
+		
+		tests_passed += TestCases.TestSearch();
 
 		
 		System.out.println("Tests passed: "+tests_passed+"/"+total_tests);
@@ -203,6 +208,7 @@ public class TestCases {
 	}
 	
 	public static int TestIsMemberOf()
+
 	{
 		String username = "j.bieber"; int id = 11;
 		
@@ -258,4 +264,52 @@ public class TestCases {
 		}
 	}
 
+	public static int TestSearch()
+	{
+		
+		
+		SearchController sc = null;
+		try
+		{
+			sc = new SearchController();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		HashSet<String> printed = null;
+		try
+		{
+			printed = (HashSet<String>) sc.keywordsearch("Edmonton ach ZacHb zachb", null, null);
+		} catch (SQLException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try
+		{
+			sc.close();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (String photoid : printed){
+			System.out.println("ID: "+photoid);	
+			}
+		return 1;
+	}
 }

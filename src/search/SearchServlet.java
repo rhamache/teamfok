@@ -3,11 +3,13 @@ package search;
 import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Set;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import security.SecurityModule;
+import security.SecurityController;
 import search.SearchController;
 
 public class SearchServlet extends HttpServlet
@@ -16,7 +18,7 @@ public class SearchServlet extends HttpServlet
       throws ServletException, IOException
       {	  
 		  PrintWriter out = response.getWriter();
-		  if (!SecurityModule.isLoggedIn(request.getSession())) 
+		  if (!SecurityController.isLoggedIn(request.getSession())) 
 		  {
 			  out.println("<h2>You are not logged in</h2>");
 			  return;
@@ -59,7 +61,7 @@ public class SearchServlet extends HttpServlet
 	    	  return;
 	      }
 	      HttpSession session = request.getSession(true);
-	      ResultSet results = null;
+	      Set<String> results = null;
 	      try
 	      {
 	    	results = sbc.keywordsearch(keywords, timebias, timespace);
