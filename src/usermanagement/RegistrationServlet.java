@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -48,7 +47,6 @@ public class RegistrationServlet extends HttpServlet
 	  throws IOException 
 	  {
 		  HTMLBuilder html = new HTMLBuilder();
-		  boolean loggedIn = false;
 		  
 		  if (SecurityController.isLoggedIn(request.getSession()))
 		  {

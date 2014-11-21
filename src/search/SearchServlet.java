@@ -9,6 +9,10 @@ import java.util.Set;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+
+import proj1.HTMLBuilder;
+
+
 import security.SecurityController;
 import search.SearchController;
 
@@ -17,17 +21,26 @@ public class SearchServlet extends HttpServlet
 	  public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
       {	  
-		  PrintWriter out = response.getWriter();
+		  HTMLBuilder html = new HTMLBuilder();
+		  html.makeHeader();
+
 		  if (!SecurityController.isLoggedIn(request.getSession())) 
 		  {
-			  out.println("<h2>You are not logged in</h2>");
-			  return;
+			  html.makeMenu(false);
+			  html.appendHTML("You are not logged in");
 		  }
 		  else
 		  {
-			  RequestDispatcher view = request.getRequestDispatcher("/html/sql_input.html");
-			  view.forward(request, response);
+			  html.makeMenu(true);
+			  
+			  ServletContext context = getServletContext();
+			  String path = context.getRealPath("/html/search.html");
+			  
+			  html.buildFromFile(path);
 		  }
+		  
+		  html.makeFooter();
+		  html.putInResponse(response);
 		  
       }
 	  public void doPost(HttpServletRequest request, HttpServletResponse response)
