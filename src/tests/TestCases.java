@@ -24,19 +24,19 @@ public class TestCases {
 		
 		int total_tests = 7, tests_passed = 0;
 		
-		//tests_passed += TestCases.TestDBC();
+		tests_passed += TestCases.TestDBC();
 		
-		//tests_passed += TestCases.TestLoginPost();
+		tests_passed += TestCases.TestLoginPost();
 		
-		//tests_passed += TestCases.TestHomePageGet();
+		tests_passed += TestCases.TestHomePageGet();
 		
-		//tests_passed += TestCases.TestHTMLFromFile();
+		tests_passed += TestCases.TestHTMLFromFile();
 		
-		//tests_passed += TestCases.TestRegistrationNewUser();
+		tests_passed += TestCases.TestRegistrationNewUser();
 		
-		//tests_passed += TestCases.TestIsMemberOf();
+		tests_passed += TestCases.TestIsMemberOf();
 		
-		//tests_passed += TestCases.TestSearch();
+		tests_passed += TestCases.TestSearch();
 		
 		tests_passed += TestCases.TestGroupCreate();
 		
@@ -241,23 +241,10 @@ public class TestCases {
 		try
 		{
 			sc = new SecurityController();
-		} catch (SQLException e)
+		} catch (Exception e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ClassNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 		HttpSession sesh = new TestHttpSession();
 		sesh.setAttribute("username", username);

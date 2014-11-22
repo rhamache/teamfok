@@ -51,6 +51,7 @@ public class HTMLBuilder
 			pw.println("<li><a href=\"/proj1/logout.html\">Logout</a></li>");
 			pw.println("<li><a href=\"/proj1/search.html\">Search</a></li>");
 			pw.println("<li><a href=\"/proj1/groups.html\">Groups</a></li>");
+			pw.println("<li><a href=\"/proj1/upload.html\">Upload</a></li>");
 		} else {
 			pw.println("<li><a href=\"/proj1/login.html\">Login</a></li>");
 		}
