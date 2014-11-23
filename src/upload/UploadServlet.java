@@ -43,6 +43,7 @@ public class UploadServlet extends HttpServlet
 			
 			html.buildFromFile(path);
 			
+			html.appendHTML("<a href = \"/proj1/display/myphotos\">My uploaded photos</a>");
 			html.makeFooter();
 			html.putInResponse(response);
 		}
@@ -118,6 +119,10 @@ public class UploadServlet extends HttpServlet
 				html.putInResponse(response);
 				return;
 			}
+			
+			if (subject == null || subject.equals("")) { subject = "N/A"; }
+			if (place == null || place.equals("")) { place = "N/A"; }
+			if (description == null || description.equals("")) { description = "N/A"; }
 	    
 
             pic_id = udbc.getPicId();
