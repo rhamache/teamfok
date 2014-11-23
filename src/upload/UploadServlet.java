@@ -176,7 +176,7 @@ public class UploadServlet extends HttpServlet
        
             ArrayList<String> infoBundle = new ArrayList<String>();
             infoBundle.add(request.getSession().getAttribute("username").toString());
-            infoBundle.add(privacy);
+            infoBundle.add("1");
             infoBundle.add(subject);
             infoBundle.add(place);
             infoBundle.add(description);        
