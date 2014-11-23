@@ -96,6 +96,21 @@ public class UploadController extends DatabaseController
 
         return shrunkImage;
     }
+	
+	public ArrayList<Integer> gatherGroups(String username) throws SQLException{
+		ArrayList<Integer> groupsInvolved = new ArrayList<Integer>();
+		String query = "select group_id from group_lists where lower(friend_id) = '"+username+"';";
+		Statement stmt = null; ResultSet rset = null;
+	
+		stmt = conn.createStatement();
+		rset = stmt.executeQuery(query);
+	
+    	while(rset != null && rset.next()) {
+    		groupsInvolved.add((rset.getInt(1)));
+    	}
+		
+    	return groupsInvolved;
+	}
 
 }
 
