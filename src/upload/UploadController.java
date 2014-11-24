@@ -143,7 +143,11 @@ public class UploadController extends DatabaseController
 	
 	public ArrayList<Integer> gatherGroups(String username, HTMLBuilder htm) throws SQLException{
 		ArrayList<Integer> groupsInvolved = new ArrayList<Integer>();
+<<<<<<< HEAD
 		ResultSet rset = executeSQLTextStatement("select GROUP_ID from GROUP_LISTS where lower(friend_id)='"+username+"'");
+=======
+		ResultSet rset = executeSQLTextStatement("select GROUP_ID from GROUP_LISTS where lower(friend_id)='henfai'");
+>>>>>>> 44a295b96f67bd8434d3b4af484f1ea2378b45dc
     	while(rset != null && rset.next()) {
     		groupsInvolved.add((rset.getInt(1)));
     	}
