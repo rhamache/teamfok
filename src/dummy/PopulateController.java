@@ -10,13 +10,13 @@ import proj1.DatabaseController;
 import proj1.HTMLBuilder;
 
 public class PopulateController extends DatabaseController{
-
+	
 	public PopulateController() throws SQLException, ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
 		super();
 	}
-	
-	public void populate() throws SQLException{
+
+	public void main(String[] args) throws SQLException{
 		int number = 0;
 		while (number <= 20){
 			String id = "test" + number;
@@ -85,9 +85,9 @@ public class PopulateController extends DatabaseController{
 			stmt.executeUpdate("COMMIT");
 			
 			number++;
-		}
+			}
 				
-	}
+		}
 	
 	public ArrayList<Integer> gatherGID() throws SQLException{
 		Statement stmt = null; ResultSet rset = null;
