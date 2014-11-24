@@ -81,17 +81,30 @@ public class UploadServlet extends HttpServlet
 			
 			try
 			{
-				userGroups = udbc.gatherGroups(uname);
+				userGroups = udbc.gatherGroups(uname, html);
 			} catch (SQLException e)
 			{
 				e.printStackTrace();
 				html.appendHTML("udbc exception");
 			}
 			
-
-
+			for (Integer I : userGroups)
+			{
+				String groupName = "";
+				try {
+					groupName = sdbc.getGroupName(I);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				String groupNo = I.toString();
+				html.appendHTML("<option value=\""+groupNo+"\">"+groupName+"</option>");
+			}
+			html.appendHTML("</select>");
+			html.appendHTML("</form>");
+			html.appendHTML("</div>");
 			html.makeFooter();
 			html.putInResponse(response);
+
 		}
 	}
     
@@ -120,8 +133,7 @@ public class UploadServlet extends HttpServlet
 
 		UploadController udbc = null;
 		int pic_id;
-		String response_message;
-		
+		String response_message = "";
 		try
 		{
 			udbc = new UploadController();
@@ -150,7 +162,7 @@ public class UploadServlet extends HttpServlet
 		            	place = item.getString();
 		            if (item.getFieldName().equals("DES"))
 		            	description = item.getString();
-		            if (item.getFieldName().equals("privacy"))
+		            if (item.getFieldName().equals("options"))
 		            	privacy = item.getString();
 		        } else if (item.getFieldName().equals("FILEP"))
 		        {
@@ -171,15 +183,14 @@ public class UploadServlet extends HttpServlet
 			if (place == null || place.equals("")) { place = "N/A"; }
 			if (description == null || description.equals("")) { description = "N/A"; }
 	    
-
             pic_id = udbc.getPicId();
        
             ArrayList<String> infoBundle = new ArrayList<String>();
             infoBundle.add(request.getSession().getAttribute("username").toString());
-            infoBundle.add("1");
+            infoBundle.add(privacy);
             infoBundle.add(subject);
             infoBundle.add(place);
-            infoBundle.add(description);        
+            infoBundle.add(description);       
        
             udbc.writeBlob(pic_id, infoBundle, instream);
 
@@ -192,7 +203,7 @@ public class UploadServlet extends HttpServlet
 
 		} catch( Exception ex ) {
 			//System.out.println( ex.getMessage());
-			response_message="ex";
+			response_message = "ex";
 			ex.printStackTrace(response.getWriter());
 		}
 

@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import oracle.jdbc.OracleResultSet;
 import oracle.sql.BLOB;
 import proj1.DatabaseController;
+import proj1.HTMLBuilder;
 import proj1.Photo;
 
 public class UploadController extends DatabaseController
@@ -58,12 +59,12 @@ public class UploadController extends DatabaseController
 		
 		String sql = "INSERT INTO images VALUES("+id+", '" + bundle.get(0)+"', "+Integer.parseInt(bundle.get(1))+", '"+bundle.get(2)+"', '"+bundle.get(3)+"', sysdate, '"+bundle.get(4)+"',empty_blob(),empty_blob())";
 		String query = "SELECT * FROM images WHERE photo_id = "+id+" FOR UPDATE";
-		String sql2 = "INSERT INTO hitcounts VALUES("+id+", 0)";
+		//String sql2 = "INSERT INTO hitcounts VALUES("+id+", 0)";
 		Statement stmt = null; ResultSet rset = null;
 
 		stmt = conn.createStatement();
 		stmt.executeUpdate(sql);
-		stmt.executeUpdate(sql2);
+		//stmt.executeUpdate(sql2);
 		stmt.executeUpdate("COMMIT");
 		rset = stmt.executeQuery(query);
 		rset.next();
@@ -140,18 +141,12 @@ public class UploadController extends DatabaseController
 		stmt.executeUpdate("COMMIT");
 	}
 	
-	public ArrayList<Integer> gatherGroups(String username) throws SQLException{
+	public ArrayList<Integer> gatherGroups(String username, HTMLBuilder htm) throws SQLException{
 		ArrayList<Integer> groupsInvolved = new ArrayList<Integer>();
-		String query = "select group_id from group_lists where lower(friend_id) = '"+username+"';";
-		Statement stmt = null; ResultSet rset = null;
-	
-		stmt = conn.createStatement();
-		rset = stmt.executeQuery(query);
-	
+		ResultSet rset = executeSQLTextStatement("select GROUP_ID from GROUP_LISTS where lower(friend_id)='"+username+"'");
     	while(rset != null && rset.next()) {
     		groupsInvolved.add((rset.getInt(1)));
     	}
-		
     	return groupsInvolved;
 	}
 
