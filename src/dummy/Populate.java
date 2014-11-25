@@ -33,6 +33,7 @@ public class Populate extends HttpServlet{
 			throws ServletException, IOException {
 			try {
 				PopulateController pdbc = new PopulateController();
+				//pdbc.populate();
 			} catch (ClassNotFoundException | InstantiationException
 					| IllegalAccessException | SQLException e) {
 				// TODO Auto-generated catch block
