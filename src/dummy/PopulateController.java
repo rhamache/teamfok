@@ -1,5 +1,6 @@
-package dummy;
+//package dummy;
 
+import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -20,18 +21,27 @@ import javax.imageio.ImageIO;
 import oracle.jdbc.OracleResultSet;
 import oracle.sql.BLOB;
 
-import proj1.DatabaseController;
-import proj1.HTMLBuilder;
+public class PopulateController {
 
-public class PopulateController extends DatabaseController{
-
-    
-	public PopulateController() throws SQLException, ClassNotFoundException,
-			InstantiationException, IllegalAccessException {
-		super();
+ 
+	static Connection conn;
+	
+	public static void getConnected() throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException
+	{
+		final String Orc_Driver = "oracle.jdbc.driver.OracleDriver";
+	    final String Orc_URL = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
+	    final String Orc_Username = "hfok";
+	    final String Orc_Passwd = "43KBSQL5";
+	    Class drvClass = Class.forName(Orc_Driver); 
+    	DriverManager.registerDriver((Driver) drvClass.newInstance());
+    	conn = DriverManager.getConnection(Orc_URL, Orc_Username,Orc_Passwd);
 	}
 	
-	public void main(String argv[]) throws SQLException, IOException{
+	public static void main(String argv[]) throws SQLException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		getConnected();
+		
+		PopulateController pc = new PopulateController();
+		
 		int number = 0;
 		while (number <= 20){
 			String id = "test" + number;
@@ -71,7 +81,7 @@ public class PopulateController extends DatabaseController{
 			numberGroups++;
 		}
 		
-		ArrayList<Integer> groupID = gatherGID();
+		ArrayList<Integer> groupID = pc.gatherGID();
 		int photoCount = 1;
 		int permit = 1;
 		while (number <= 40){
@@ -100,12 +110,12 @@ public class PopulateController extends DatabaseController{
 			stmt.execute(gListAddSql);
 			stmt.executeUpdate("COMMIT");
 			//////////////////////////////////////////////////////////
-			String path = "D:/Henry/Documents/apache-tomcat-8.0.15/webapps/proj1/WEB-INF/src/pokemon/"+Integer.toString(photoCount)+".jpg";
+			String path = "pokemon/"+Integer.toString(photoCount)+".jpg";
 			photoCount++;
 			BufferedImage img = ImageIO.read(new File(path));
 		    BufferedImage thumbNail = shrink(img);
 		    
-		    int PicID = getPID();
+		    int PicID = pc.getPID();
 		    if (permit == 1){
 		    	permit++;
 		    } else if (permit == 2){
@@ -114,6 +124,17 @@ public class PopulateController extends DatabaseController{
 			
 			String imageSql = "INSERT INTO images VALUES("+PicID+", '" +id+"', "+permit+", 'subject "+number+"', 'location "+number+"', sysdate, 'description "+ number+"',empty_blob(),empty_blob())";
 			String que = "SELECT * FROM images WHERE photo_id = '"+PicID+"' FOR UPDATE";
+			String typeSql = "INSERT INTO imagetypes VALUES("+PicID+", 'jpg')";
+			String hitSql = null; String hitsSQL = "COMMIT";
+			if (number <= 30)
+			{
+				hitSql = "INSERT INTO hitcounts VALUES("+PicID+", "+number*6+")";
+				hitsSQL = "INSERT INTO hits VALUES("+PicID+", '"+id+"')";
+			}
+			else
+			{
+				hitSql = "INSERT INTO hitcounts VALUES("+PicID+", 0)";
+			}
 			//String sql2 = "INSERT INTO hitcounts VALUES("+id+", 0)";
 			ResultSet rset = null;
 
@@ -121,6 +142,13 @@ public class PopulateController extends DatabaseController{
 			stmt.executeUpdate(imageSql);
 			//stmt.executeUpdate(sql2);
 			stmt.executeUpdate("COMMIT");
+			//////////
+			stmt = conn.createStatement();
+			stmt.executeQuery(typeSql);
+			stmt = conn.createStatement();
+			stmt.executeQuery(hitSql);
+			stmt.executeQuery("COMMIT");
+			////////////
 			rset = stmt.executeQuery(que);
 			rset.next();
 			
@@ -149,7 +177,7 @@ public class PopulateController extends DatabaseController{
 			number++;
 		}
 		
-		
+		conn.close();
 				
 	}
 	
@@ -220,7 +248,10 @@ public class PopulateController extends DatabaseController{
 	}
 	
 	public int getPID() throws SQLException{
-		ResultSet rset1 = executeSQLTextStatement("SELECT pic_id_seq.nextval FROM dual");
+		Statement stmt = null; 
+		stmt = conn.createStatement();
+		String query = "SELECT pic_id_seq.nextval FROM dual";
+		ResultSet rset1 = stmt.executeQuery(query);
         rset1.next();
         int id = rset1.getInt(1);
 		return id;
